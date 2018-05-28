@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="MGFaceppSDK-0.5.2:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/20eab59849d669c85667787abf5bb7aab575ae6b/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/20eab59849d669c85667787abf5bb7aab575ae6b/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
