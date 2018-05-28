@@ -12,7 +12,7 @@ local.properties
 obj/
 .externalNativeBuild
 release/
-build/
+/build
 .idea
 *.iml
 
