@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/action_item_root">
+
+    <LinearLayout
+        android:id="@+id/item_container"
+        style="@style/action_item_container">
+
+        <com.facepp.demo.util.AutoRatioImageview
+            android:id="@+id/feature_image"
+            android:layout_width="35dip"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/record_blue" />
+
+        <TextView
+            android:id="@+id/feature_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#FF30364C"
+            android:textSize="10sp"
+            tools:text="文字识别" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -55,7 +55,6 @@ public class OpenglActivity extends Activity
     private boolean isStartRecorder, is3DPose, isDebug, isROIDetect, is106Points, isBackCamera, isFaceProperty,
             isOneFaceTrackig, isFaceCompare, isShowFaceRect;
     private String trackModel;
-    private int printTime = 31;
     private GLSurfaceView mGlSurfaceView;
     private ICamera mICamera;
     private Camera mCamera;
@@ -66,21 +65,15 @@ public class OpenglActivity extends Activity
     private HandlerThread mHandlerThread = new HandlerThread("facepp");
     private Handler mHandler;
     private Facepp facepp;
-    private MediaRecorderUtil mediaRecorderUtil;
     private int min_face_size = 200;
     private int detection_interval = 25;
     private HashMap<String, Integer> resolutionMap;
     private SensorEventUtil sensorUtil;
     private float roi_ratio = 0.8f;
-    private byte[] newestFeature;
+
     private byte[] carmeraImgData;
 
-    private int screenWidth;
-    private int screenHeight;
-    private boolean isSurfaceCreated;
-
     private FaceActionInfo faceActionInfo;
-    private ImageView imgIcon;
 
     private MediaHelper mMediaHelper;
 
@@ -91,26 +84,13 @@ public class OpenglActivity extends Activity
         setContentView(R.layout.activity_opengl);
 
         init();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                startRecorder();
-//            }
-//        }, 2000);
 
         FaceCompareManager.instance().loadFeature(this);
         ConUtil.toggleHideyBar(this);
 
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        screenWidth = outMetrics.widthPixels;
-        screenHeight = outMetrics.heightPixels;
-
     }
 
     private void init() {
-        if (android.os.Build.MODEL.equals("PLK-AL10"))
-            printTime = 50;
 
         faceActionInfo = (FaceActionInfo) getIntent().getSerializableExtra("FaceAction");
 
@@ -166,15 +146,13 @@ public class OpenglActivity extends Activity
             public void onClick(View v) {
 
                 // 保存feature数据
-                if (mICamera==null||mICamera.mCamera==null){
+                if (mICamera == null || mICamera.mCamera == null) {
                     return;
                 }
                 if (compareFaces == null || compareFaces.length <= 0 || carmeraImgData == null) {
                     Toast.makeText(OpenglActivity.this, "当前未检测到人脸", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-//                Log.e("xie","xie rect"+compareFaces[0].rect.top+"bottom"+compareFaces[0].rect.bottom+newestFeature);
 
                 FaceCompareManager.instance().startActivity(OpenglActivity.this, compareFaces, mICamera, carmeraImgData, isBackCamera, faceActionInfo);
             }
@@ -185,30 +163,6 @@ public class OpenglActivity extends Activity
             btnAddFeature.setVisibility(View.VISIBLE);
         } else {
             btnAddFeature.setVisibility(View.GONE);
-        }
-
-        imgIcon = (ImageView) findViewById(R.id.opengl_layout_icon);
-    }
-
-
-
-    /**
-     * 开始录制
-     */
-    private void startRecorder() {
-        if (isStartRecorder) {
-            int Angle = 360 - mICamera.Angle;
-            if (isBackCamera)
-                Angle = mICamera.Angle;
-            mediaRecorderUtil = new MediaRecorderUtil(this, mCamera, mICamera.cameraWidth, mICamera.cameraHeight);
-            isStartRecorder = mediaRecorderUtil.prepareVideoRecorder(Angle);
-            if (isStartRecorder) {
-                boolean isRecordSucess = mediaRecorderUtil.start();
-                if (isRecordSucess)
-                    mICamera.actionDetect(this);
-                else
-                    mDialogUtil.showDialog(getResources().getString(R.string.no_record));
-            }
         }
     }
 
@@ -256,10 +210,10 @@ public class OpenglActivity extends Activity
             String errorCode = facepp.init(this, ConUtil.getFileContent(this, R.raw.megviifacepp_0_5_2_model), isOneFaceTrackig ? 1 : 0);
 
             //sdk内部其他api已经处理好，可以不判断
-            if (errorCode!=null){
-                Intent intent=new Intent();
-                intent.putExtra("errorcode",errorCode);
-                setResult(101,intent);
+            if (errorCode != null) {
+                Intent intent = new Intent();
+                intent.putExtra("errorcode", errorCode);
+                setResult(101, intent);
                 finish();
                 return;
             }
@@ -383,7 +337,7 @@ public class OpenglActivity extends Activity
                         float x = (faces[c].points[i].x / width) * 2 - 1;
                         if (isBackCamera)
                             x = -x;
-                        float y = (faces[c].points[i].y / height) * 2-1;
+                        float y = (faces[c].points[i].y / height) * 2 - 1;
                         float[] pointf = new float[]{y, x, 0.0f};
                         FloatBuffer fb = mCameraMatrix.floatBufferUtil(pointf);
                         triangleVBList.add(fb);
@@ -475,9 +429,7 @@ public class OpenglActivity extends Activity
                                 }
                                 if (facepp.getExtractFeature(face)) {
                                     synchronized (OpenglActivity.this) {
-                                        newestFeature = face.feature;
                                         carmeraImgData = imgData;
-
                                     }
 
                                     if (c == faces.length - 1) {
@@ -502,26 +454,26 @@ public class OpenglActivity extends Activity
 
                                                 PointF noseP = null;
                                                 PointF eyebrowP = null;
-                                                if (is106Points){
-                                                    noseP=face.points[46];
-                                                    eyebrowP=face.points[37];
-                                                }else{
-                                                    noseP=face.points[34];
-                                                    eyebrowP=face.points[19];
+                                                if (is106Points) {
+                                                    noseP = face.points[46];
+                                                    eyebrowP = face.points[37];
+                                                } else {
+                                                    noseP = face.points[34];
+                                                    eyebrowP = face.points[19];
                                                 }
                                                 boolean isVertical;
-                                                if (orientation==0||orientation==3){
-                                                    isVertical=true;
-                                                }else{
-                                                    isVertical=false;
+                                                if (orientation == 0 || orientation == 3) {
+                                                    isVertical = true;
+                                                } else {
+                                                    isVertical = false;
                                                 }
-                                                int tops= (int) (((mICamera.cameraWidth-(isVertical?eyebrowP.x:noseP.x)))*(mGlSurfaceView.getHeight()*1.0f/mICamera.cameraWidth));
-                                                int lefts= (int) ((mICamera.cameraHeight-(isVertical?noseP.y:eyebrowP.y))*(mGlSurfaceView.getWidth()*1.0f/mICamera.cameraHeight));
-                                                if (isBackCamera){
-                                                    tops=mGlSurfaceView.getHeight()-tops;
+                                                int tops = (int) (((mICamera.cameraWidth - (isVertical ? eyebrowP.x : noseP.x))) * (mGlSurfaceView.getHeight() * 1.0f / mICamera.cameraWidth));
+                                                int lefts = (int) ((mICamera.cameraHeight - (isVertical ? noseP.y : eyebrowP.y)) * (mGlSurfaceView.getWidth() * 1.0f / mICamera.cameraHeight));
+                                                if (isBackCamera) {
+                                                    tops = mGlSurfaceView.getHeight() - tops;
                                                 }
-                                                tops=tops-txtHeight/2;
-                                                lefts=lefts-txtWidth/2;
+                                                tops = tops - txtHeight / 2;
+                                                lefts = lefts - txtWidth / 2;
                                                 params.leftMargin = lefts;
                                                 params.topMargin = tops;
                                                 featureTargetText.setLayoutParams(params);
@@ -550,7 +502,7 @@ public class OpenglActivity extends Activity
                                 for (int i = 0; i < tvFeatures.size(); i++) {
                                     ((RelativeLayout) mGlSurfaceView.getParent()).removeView(tvFeatures.get(i));
                                 }
-                                prefaceCount=0;
+                                prefaceCount = 0;
                             }
                         });
                         mPointsMatrix.rect = null;
@@ -584,12 +536,8 @@ public class OpenglActivity extends Activity
     protected void onPause() {
         super.onPause();
         ConUtil.releaseWakeLock();
-        if (mediaRecorderUtil != null) {
-            mediaRecorderUtil.releaseMediaRecorder();
-        }
         mICamera.closeCamera();
         mCamera = null;
-
 
 
         finish();
@@ -597,7 +545,7 @@ public class OpenglActivity extends Activity
 
     @Override
     protected void onDestroy() {
-        if (mMediaHelper!=null)
+        if (mMediaHelper != null)
             mMediaHelper.stopRecording();
         super.onDestroy();
         mHandler.post(new Runnable() {
@@ -616,8 +564,6 @@ public class OpenglActivity extends Activity
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-        // TODO Auto-generated method stub
-//		Log.d("ceshi", "onFrameAvailable");
         mGlSurfaceView.requestRender();
     }
 
@@ -707,23 +653,6 @@ public class OpenglActivity extends Activity
 
     }
 
-    private RectF calRect(Rect rect, float width, float height) {
-        float top = 1 - (rect.top * 1.0f / height) * 2;
-        float left = (rect.left * 1.0f / width) * 2 - 1;
-        float right = (rect.right * 1.0f / width) * 2 - 1;
-        float bottom = 1 - (rect.bottom * 1.0f / height) * 2;
-
-
-        RectF rectf = new RectF();
-        rectf.top = top;
-        rectf.left = left;
-        rectf.right = right;
-        rectf.bottom = bottom;
-
-        Log.d("ceshi", "calRect: " + rectf);
-        return rectf;
-    }
-
     private FloatBuffer calRectPostion(Rect rect, float width, float height) {
         float top = 1 - (rect.top * 1.0f / height) * 2;
         float left = (rect.left * 1.0f / width) * 2 - 1;
@@ -753,7 +682,6 @@ public class OpenglActivity extends Activity
         FloatBuffer buffer = mCameraMatrix.floatBufferUtil(tempFace);
         return buffer;
     }
-
 
 
 }

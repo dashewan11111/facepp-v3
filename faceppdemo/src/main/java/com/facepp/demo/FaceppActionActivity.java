@@ -72,12 +72,6 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
         initData();
         onClickListener();
         requestCameraPerm();
-//        mListView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                requestCameraPerm();
-//            }
-//        }, 500);
 
         String jsonInfo = String.format("{" + "\"minFaceSize\":%d,"
                         + "\"rotation\":%d,"
@@ -196,8 +190,7 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
     public static final int EXTERNAL_STORAGE_REQ_CAMERA_CODE = 10;
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == EXTERNAL_STORAGE_REQ_CAMERA_CODE)
             getCameraSizeList();
         if ((requestCode == EXTERNAL_STORAGE_REQ_AUDIO_CODE) && ContextCompat.checkSelfPermission(this,
@@ -210,13 +203,11 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==101){
-            String error=data.getStringExtra("errorcode");
-            ConUtil.showToast(this, "sdk init error, code: "+error);
+        if (resultCode == 101) {
+            String error = data.getStringExtra("errorcode");
+            ConUtil.showToast(this, "sdk init error, code: " + error);
         }
         getCameraSizeList();
-
-
     }
 
     private void getCameraSizeList() {
@@ -230,9 +221,9 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        RelativeLayout.LayoutParams rlp= (RelativeLayout.LayoutParams) mListView.getLayoutParams();
-                        rlp.width= ConUtil.dip2px(FaceppActionActivity.this,200);
-                        rlp.height=ConUtil.dip2px(FaceppActionActivity.this,55)*cameraSize.size();
+                        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) mListView.getLayoutParams();
+                        rlp.width = ConUtil.dip2px(FaceppActionActivity.this, 200);
+                        rlp.height = ConUtil.dip2px(FaceppActionActivity.this, 55) * cameraSize.size();
                         mListView.setLayoutParams(rlp);
                         mListAdapter.notifyDataSetChanged();
                     }
@@ -247,17 +238,6 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
             mListRel.setVisibility(View.GONE);
         else
             mListRel.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -269,9 +249,9 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
             mDialogUtil.showEditText(editItemTexts[0], 0);
         } else if (ID == R.id.landmark_edititem_1) {//分辨率
             ConUtil.isGoneKeyBoard(FaceppActionActivity.this);
-            if (mListAdapter.getCount()==0){
-                Toast.makeText(FaceppActionActivity.this,"请获取相机权限后重试",Toast.LENGTH_SHORT).show();
-            }else{
+            if (mListAdapter.getCount() == 0) {
+                Toast.makeText(FaceppActionActivity.this, "请获取相机权限后重试", Toast.LENGTH_SHORT).show();
+            } else {
                 isShowListView();
             }
         } else if (ID == R.id.landmark_edititem_2) {
@@ -290,7 +270,7 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
             ConUtil.isGoneKeyBoard(FaceppActionActivity.this);
         } else if (ID == R.id.landmark_imageitem_0) {
 
-            Toast.makeText(FaceppActionActivity.this,"开发中",Toast.LENGTH_SHORT).show();
+            Toast.makeText(FaceppActionActivity.this, "开发中", Toast.LENGTH_SHORT).show();
 
 //
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -305,11 +285,11 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
         } else if (ID == R.id.landmark_imageitem_2) {
             isDebug = !isDebug;
             onclickImageItem(2, isDebug);
-            if (isDebug){
-                isFaceCompare=false;
+            if (isDebug) {
+                isFaceCompare = false;
                 onclickImageItem(7, isFaceCompare);
-            }else{
-                isFaceProperty=false;
+            } else {
+                isFaceProperty = false;
                 onclickImageItem(6, isFaceProperty);
             }
         } else if (ID == R.id.landmark_imageitem_3) {
@@ -331,10 +311,10 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
 
             isFaceProperty = !isFaceProperty;
             onclickImageItem(6, isFaceProperty);
-            if (isFaceProperty){
-                isFaceCompare=false;
-                onclickImageItem(7,isFaceCompare);
-                isDebug=true;
+            if (isFaceProperty) {
+                isFaceCompare = false;
+                onclickImageItem(7, isFaceCompare);
+                isDebug = true;
                 onclickImageItem(2, isDebug);
             }
         } else if (ID == R.id.landmark_imageitem_7) {
@@ -391,7 +371,7 @@ public class FaceppActionActivity extends Activity implements OnClickListener {
             faceActionInfo.trackModel = editItemTexts[4].getText().toString().trim();
             faceActionInfo.isFaceCompare = isFaceCompare;
 
-            startActivityForResult(new Intent(FaceppActionActivity.this, OpenglActivity.class).putExtra("FaceAction", faceActionInfo),101);
+            startActivityForResult(new Intent(FaceppActionActivity.this, OpenglActivity.class).putExtra("FaceAction", faceActionInfo), 101);
         }
     }
 

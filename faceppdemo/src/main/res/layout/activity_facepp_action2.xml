@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEF3FA"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/landmark_title"
+        layout="@layout/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.facepp.demo.util.AutoRatioImageview
+        android:id="@+id/landmark_logo"
+        android:layout_width="100dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/facepplogo" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/landmark_features"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1.0" />
+
+    <Button
+        android:id="@+id/landmark_enterBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_marginBottom="25dip"
+        android:layout_marginLeft="35dip"
+        android:layout_marginRight="35dip"
+        android:background="@drawable/bg_buttonblue_select"
+        android:text="检测人脸"
+        android:textColor="#ffffffff"
+        android:textSize="22sp"
+        android:visibility="visible" />
+
+    <include
+        layout="@layout/power_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="35dip"
+        android:visibility="visible" />
+</LinearLayout>

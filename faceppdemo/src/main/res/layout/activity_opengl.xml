@@ -65,18 +65,6 @@
         android:background="@drawable/face_compare_reg"
         />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/facecompare_blue"
-        android:layout_centerInParent="true"
-        android:id="@+id/opengl_layout_icon"
-        android:visibility="gone"
-        />
-
-
-
-
     <!--<ImageButton-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
