@@ -70,9 +70,20 @@ public class FaceppActionActivity2 extends Activity implements FeaturesAdapter.O
 
     @Override
     public void onClick(View v) {
-
-
         startActivityForResult(new Intent(this, OpenglActivity.class).putExtra("FaceAction", faceActionInfo), 101);
+    }
+
+    public static final int EXTERNAL_STORAGE_REQ_CAMERA_CODE = 10;
+
+    //oppo vivo 第二次权限进入适配
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 101) {
+            String error = data.getStringExtra("errorcode");
+            ConUtil.showToast(this, "sdk init error, code: " + error);
+        }
+        // getCameraSizeList();
     }
 
     @Override
@@ -116,7 +127,6 @@ public class FaceppActionActivity2 extends Activity implements FeaturesAdapter.O
                     default:
                         break;
                 }
-                Toast.makeText(this, "功能 ： " + getResources().getString(item.getBottomTitle()[0]) + "", Toast.LENGTH_LONG).show();
                 break;
 
             case FaceActionItem.ITEM_TYPE_INPUT:
@@ -229,43 +239,6 @@ public class FaceppActionActivity2 extends Activity implements FeaturesAdapter.O
         AlertDialog dialog = builder.create(); // 创建对话框
         dialog.setCanceledOnTouchOutside(true); // 设置弹出框失去焦点是否隐藏,即点击屏蔽其它地方是否隐藏
         dialog.show();
-
-    }
-
-    public String getContent(String str, int index) {
-        String content = str;
-        switch (index) {
-            case 0:
-                long faceSize = (long) Float.parseFloat(content);
-                if (faceSize < 33)
-                    faceSize = 33;
-                else if (faceSize > 2147483647)
-                    faceSize = 2147483647;
-
-                content = faceSize + "";
-                break;
-            case 1:
-                long interval = (long) Float.parseFloat(content);
-                if (interval < 1)
-                    interval = 1;
-                else if (interval > 2147483647)
-                    interval = 2147483647;
-
-                content = interval + "";
-                break;
-            case 2:
-            case 3:
-            case 4:
-                float vlaue = Float.parseFloat(content);
-                if (vlaue < 0)
-                    vlaue = 0;
-                else if (vlaue > 1)
-                    vlaue = 1;
-
-                content = vlaue + "";
-                break;
-        }
-        return content;
     }
 
     public boolean isNum(String str) {
